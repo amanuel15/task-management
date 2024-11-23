@@ -2,7 +2,10 @@ import prisma from '@/models/prismaClient';
 import { taskSchemas } from '@/schemas';
 
 export function findMyTasks(userId: string) {
-  return prisma.task.findMany({ where: { userId } });
+  return prisma.task.findMany({
+    where: { userId },
+    orderBy: { dueDate: 'desc', priority: 'desc' }
+  });
 }
 
 export function findMyTask(taskId: string, userId: string) {
