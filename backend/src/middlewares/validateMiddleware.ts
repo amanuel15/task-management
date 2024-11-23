@@ -3,10 +3,12 @@ import { Request, Response, NextFunction } from 'express';
 
 export default function validate(
   schema: Schema,
-  field: 'body' | 'query' = 'body'
+  field: 'body' | 'query' | 'params' = 'body'
 ) {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const val = schema.safeParse(field === 'query' ? req.query : req.body);
+    const val = schema.safeParse(
+      field === 'query' ? req.query : field === 'params' ? req.params : req.body
+    );
     if (val.success) {
       if (field === 'body') {
         req.body = val.data;

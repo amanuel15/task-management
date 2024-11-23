@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { authSchemas } from '@/schemas';
 import { authService } from '@/services';
 import { logger } from '@/utils';
-import { generateToken } from '@/utils/jwt';
+import { jwtUtils } from '@/utils';
 
 export async function register(req: Request, res: Response): Promise<any> {
   try {
@@ -32,7 +32,7 @@ export async function login(req: Request, res: Response): Promise<any> {
       return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
-    const token = generateToken(user);
+    const token = jwtUtils.generateToken(user);
     res.status(200).json({
       msg: 'Login successful',
       token
