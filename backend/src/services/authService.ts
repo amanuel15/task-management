@@ -5,17 +5,28 @@ import { authSchemas } from '@/schemas';
 
 export async function createUser(user: authSchemas.RegisterSchema) {
   user.password = await hashPassword(user.password);
-  return prisma.user.create({ data: user });
+  return prisma.user.create({
+    data: user,
+    select: { id: true, email: true, name: true }
+  });
 }
 
 export function findUser(email: string) {
-  return prisma.user.findUnique({ where: { email }, select: { email: true } });
+  return prisma.user.findUnique({
+    where: { email },
+    select: { id: true, email: true, name: true }
+  });
 }
 
 function hashPassword(password: string) {
   return hash(password, 10);
 }
 
-export function comparePassword(password: string, hash: string) {
-  return compare(password, hash);
+export async function isPasswordValid(email: string, password: string) {
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: { password: true }
+  });
+  if (!user) return false;
+  return compare(password, user.password);
 }
