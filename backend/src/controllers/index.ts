@@ -1,4 +1,2 @@
-import * as authController from './authController';
-import * as taskController from './taskController';
-
-export { authController, taskController };
+export * as authController from './authController';
+export * as taskController from './taskController';
