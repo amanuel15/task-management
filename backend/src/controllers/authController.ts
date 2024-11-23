@@ -24,12 +24,12 @@ export async function login(req: Request, res: Response): Promise<any> {
     const { email, password }: authSchemas.LoginSchema = req.body;
     const user = await authService.findUser(email);
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
     const isValidPassword = await authService.isPasswordValid(email, password);
     if (!isValidPassword) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
     const token = generateToken(user);

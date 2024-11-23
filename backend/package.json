@@ -10,7 +10,7 @@
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "start": "npm run build && node build/index.js",
     "start:dev": "npx nodemon",
-    "test": "jest"
+    "test": "npx prisma db push && jest"
   },
   "author": "amanuel.genene11@gmail.com",
   "license": "ISC",
