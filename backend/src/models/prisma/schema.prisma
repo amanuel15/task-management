@@ -12,3 +12,40 @@ datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
 }
+
+model User {
+    id        String   @id @default(uuid())
+    email     String   @unique
+    password  String // Store hashed passwords for security
+    name      String
+    tasks     Task[] // One-to-many relationship with tasks
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum TaskStatus {
+    PENDING
+    IN_PROGRESS
+    COMPLETED
+}
+
+enum TaskPriority {
+    HIGH
+    MEDIUM
+    LOW
+}
+
+model Task {
+    id          String       @id @default(uuid())
+    title       String
+    description String?
+    status      TaskStatus   @default(PENDING)
+    priority    TaskPriority @default(MEDIUM)
+    dueDate     DateTime?
+    userId      String
+    user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+
+    @@index(fields: [priority(sort: Desc), dueDate(sort: Desc)])
+}
