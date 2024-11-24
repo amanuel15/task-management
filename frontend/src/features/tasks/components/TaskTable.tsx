@@ -24,18 +24,21 @@ import {
 import { getTasks } from "@/services/taskService";
 import { useState } from "react";
 import CreateTaskDialog from "./CreateTaskDialog";
+import { Task } from "@/types/task";
+import UpdateTaskDialog from "./UpdateTaskDialog";
+import { UpdateTaskSchema } from "../taskSchema";
 
 export default function TaskTable() {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [openTask, setOpenTask] = useState<Task | null>(null);
   const { data, isLoading, error } = useQuery({
     queryKey: ["tasks"],
     queryFn: getTasks,
   });
   // const [tableData, setTableData] = useState<Task[]>(data?.data || []);
 
-  const handleEdit = (id: string) => {
-    // Implement edit functionality here
-    console.log(`Editing task ${id}`);
+  const handleEdit = (task: Task) => {
+    setOpenTask(task);
   };
 
   const handleDelete = (id: string) => {
@@ -104,7 +107,7 @@ export default function TaskTable() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => handleEdit(task.id)}>
+                      <DropdownMenuItem onClick={() => handleEdit(task)}>
                         <Pencil className="mr-2 h-4 w-4" />
                         <span>Edit</span>
                       </DropdownMenuItem>
@@ -130,6 +133,13 @@ export default function TaskTable() {
         </TableFooter>
       </Table>
       <CreateTaskDialog open={openCreateDialog} setOpen={setOpenCreateDialog} />
+      {!!openTask && (
+        <UpdateTaskDialog
+          open={!!openTask}
+          setOpen={() => setOpenTask(null)}
+          task={openTask as Task & UpdateTaskSchema}
+        />
+      )}
     </div>
   );
 }

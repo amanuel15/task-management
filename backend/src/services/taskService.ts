@@ -4,7 +4,7 @@ import { taskSchemas } from '@/schemas';
 export function findMyTasks(userId: string) {
   return prisma.task.findMany({
     where: { userId },
-    orderBy: { dueDate: 'desc' }
+    orderBy: [{ dueDate: 'asc' }, { priority: 'asc' }, { status: 'asc' }]
   });
 }
 

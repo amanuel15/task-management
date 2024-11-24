@@ -24,7 +24,7 @@ export async function updateTask({
   task: UpdateTaskSchema;
 }) {
   try {
-    const response = await apiClient.patch(`/api/tasks/${taskId}`, task);
+    const response = await apiClient.put(`/api/tasks/${taskId}`, task);
 
     return response.data; // return data to inform the component about the result
   } catch (error) {

@@ -38,30 +38,32 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CreateTaskSchema, createTaskSchema } from "../taskSchema";
+import { updateTaskSchema, UpdateTaskSchema } from "../taskSchema";
 import { useMutation, useQueryClient } from "react-query";
-import { createTask } from "@/services/taskService";
+import { updateTask } from "@/services/taskService";
 import { useToast } from "@/hooks/use-toast";
 
-export default function CreateTaskDialog({
+export default function UpdateTaskDialog({
   open,
   setOpen,
+  task,
 }: {
   open: boolean;
   setOpen: (val: boolean) => void;
+  task: UpdateTaskSchema & { id: string };
 }) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { isLoading, mutate } = useMutation(createTask, {
+  const { isLoading, mutate } = useMutation(updateTask, {
     onError: () => {
       toast({
-        title: "Task Creation Failed",
+        title: "Task Update Failed",
       });
     },
     onSuccess: () => {
       toast({
-        title: "Task Created Successfully",
+        title: "Task Updated Successfully",
       });
       setOpen(false);
       queryClient.invalidateQueries("tasks");
@@ -69,27 +71,28 @@ export default function CreateTaskDialog({
     },
   });
 
-  const form = useForm<CreateTaskSchema>({
-    resolver: zodResolver(createTaskSchema),
+  const form = useForm<UpdateTaskSchema>({
+    resolver: zodResolver(updateTaskSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      priority: "MEDIUM",
-      dueDate: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      priority: task.priority,
+      dueDate: task.dueDate,
     },
   });
 
-  async function onSubmit(values: CreateTaskSchema) {
-    mutate(values);
+  async function onSubmit(values: UpdateTaskSchema) {
+    mutate({ taskId: task.id, task: values });
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Task</DialogTitle>
+          <DialogTitle>Update Task</DialogTitle>
           <DialogDescription>
-            Add a new task to your list. Click save when you're done.
+            Update the task and Click save when you're done.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -124,7 +127,7 @@ export default function CreateTaskDialog({
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="status"
               render={({ field }) => (
@@ -140,15 +143,15 @@ export default function CreateTaskDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Not Started">Not Started</SelectItem>
-                      <SelectItem value="In Progress">In Progress</SelectItem>
-                      <SelectItem value="Completed">Completed</SelectItem>
+                      <SelectItem value="PENDING">Pending</SelectItem>
+                      <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+                      <SelectItem value="COMPLETED">Completed</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
             <FormField
               control={form.control}
               name="priority"
@@ -203,7 +206,9 @@ export default function CreateTaskDialog({
                       <Calendar
                         mode="single"
                         selected={new Date(field.value)}
-                        onSelect={field.onChange}
+                        onSelect={(date) => {
+                          field.onChange(date?.toISOString());
+                        }}
                         initialFocus
                       />
                     </PopoverContent>

@@ -12,7 +12,7 @@ router.post(
   validateSchema(taskSchemas.createTaskSchema),
   taskController.create
 );
-router.patch(
+router.put(
   '/:id',
   validateSchema(taskSchemas.updateTaskSchema),
   validateSchema(idSchema, 'params'),
