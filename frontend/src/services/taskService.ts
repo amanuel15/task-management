@@ -32,6 +32,18 @@ export async function updateTask({
     throw error;
   }
 }
+
+export async function deleteTask(taskId: string) {
+  try {
+    const response = await apiClient.delete(`/api/tasks/${taskId}`);
+
+    return response.data; // return data to inform the component about the result
+  } catch (error) {
+    console.error("Delete task error:", error);
+    throw error;
+  }
+}
+
 export async function getTasks(): Promise<{ msg: string; data: Task[] }> {
   try {
     const response = await apiClient.get("/api/tasks");

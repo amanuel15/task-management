@@ -7,15 +7,18 @@ export default function Dashboard() {
 
   return (
     <div>
-      Dashboard
-      <Button
-        onClick={() => {
-          localStorage.removeItem("authToken");
-          logout();
-        }}
-      >
-        Logout
-      </Button>
+      <div className="py-4 flex flex-row justify-between border-b mb-4">
+        <h2 className="text-2xl font-bold">Task Management</h2>
+        <Button
+          onClick={() => {
+            localStorage.removeItem("authToken");
+            logout();
+          }}
+          variant={"outline"}
+        >
+          Logout
+        </Button>
+      </div>
       <TaskTable />
     </div>
   );

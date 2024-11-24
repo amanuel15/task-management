@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Loader2, MoreHorizontal, Pencil, Plus, Trash } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
@@ -21,31 +21,44 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getTasks } from "@/services/taskService";
+import { deleteTask, getTasks } from "@/services/taskService";
 import { useState } from "react";
 import CreateTaskDialog from "./CreateTaskDialog";
 import { Task } from "@/types/task";
 import UpdateTaskDialog from "./UpdateTaskDialog";
 import { UpdateTaskSchema } from "../taskSchema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function TaskTable() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openTask, setOpenTask] = useState<Task | null>(null);
   const { data, isLoading, error } = useQuery({
     queryKey: ["tasks"],
     queryFn: getTasks,
   });
-  // const [tableData, setTableData] = useState<Task[]>(data?.data || []);
+
+  const { isLoading: isDeleting, mutate } = useMutation(deleteTask, {
+    onError: () => {
+      toast({
+        title: "Task Deletion Failed",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Task Deleted Successfully",
+      });
+      queryClient.invalidateQueries("tasks");
+    },
+  });
 
   const handleEdit = (task: Task) => {
     setOpenTask(task);
   };
 
   const handleDelete = (id: string) => {
-    console.log(`Delete task ${id}`);
-    // setTableData((prevData) =>
-    //   prevData.filter((item) => item.invoice !== invoice)
-    // );
+    mutate(id);
   };
 
   return (
@@ -56,6 +69,7 @@ export default function TaskTable() {
           onClick={() => {
             setOpenCreateDialog(true);
           }}
+          disabled={isDeleting}
         >
           <Plus className="mr-2 h-4 w-4" /> Create New
         </Button>
