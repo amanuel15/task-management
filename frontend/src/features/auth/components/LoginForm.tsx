@@ -12,13 +12,13 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import useAuthStore from "@/state/store";
+} from "../../../components/ui/card";
+import { Button } from "../../../components/ui/button";
+import useAuthStore from "../../../state/store";
 import { LoginSchema, loginSchema } from "../authSchema";
-import FormField from "@/components/formField";
-import { login as loginUser } from "@/services/authService";
-import { useToast } from "@/hooks/use-toast";
+import FormField from "../../../components/formField";
+import { login as loginUser } from "../../../services/authService";
+import { useToast } from "../../../hooks/use-toast";
 
 export default function LoginForm() {
   const login = useAuthStore((state) => state.login);

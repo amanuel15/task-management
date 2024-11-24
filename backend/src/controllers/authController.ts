@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
-import { authSchemas } from '@/schemas';
-import { authService } from '@/services';
-import { logger } from '@/utils';
-import { jwtUtils } from '@/utils';
+import { authSchemas } from '../schemas';
+import { authService } from '../services';
+import { logger } from '../utils';
+import { jwtUtils } from '../utils';
 
 export async function register(req: Request, res: Response): Promise<any> {
   try {
@@ -38,6 +38,7 @@ export async function login(req: Request, res: Response): Promise<any> {
       token
     });
   } catch (error) {
+    logger.error(error);
     res.status(500).json({ msg: 'Server error' });
   }
 }

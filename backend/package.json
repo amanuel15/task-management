@@ -4,12 +4,13 @@
   "description": "Express.js backend for a task management project",
   "main": "server.js",
   "scripts": {
-    "build": "rimraf ./build && tsc",
+    "build": "rimraf ./dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "start": "npm run build && node build/server.js",
+    "start": "npm run build && node dist/server.js",
     "start:dev": "npx nodemon",
+    "start:prod": "npx prisma db push && node dist/server.js",
     "test": "npx prisma db push && jest"
   },
   "author": "amanuel.genene11@gmail.com",
@@ -48,5 +49,8 @@
   },
   "prisma": {
     "schema": "src/models/prisma/schema.prisma"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

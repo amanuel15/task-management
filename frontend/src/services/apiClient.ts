@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { API_URL } from "@/configs/env";
+import { API_URL } from "../configs/env";
 
 // Create an Axios instance
 const axiosInstance = axios.create({

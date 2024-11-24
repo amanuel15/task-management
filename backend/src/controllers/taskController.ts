@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { taskService } from '@/services';
-import { taskSchemas } from '@/schemas';
-import { logger } from '@/utils';
+import { taskService } from '../services';
+import { taskSchemas } from '../schemas';
+import { logger } from '../utils';
 
 export async function findAll(req: Request, res: Response) {
   try {

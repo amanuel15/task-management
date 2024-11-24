@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Loader2, MoreHorizontal, Pencil, Plus, Trash } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../../components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -20,14 +20,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { deleteTask, getTasks } from "@/services/taskService";
+} from "../../../components/ui/table";
+import { deleteTask, getTasks } from "../../../services/taskService";
 import { useState } from "react";
 import CreateTaskDialog from "./CreateTaskDialog";
-import { Task } from "@/types/task";
+import { Task } from "../../../types/task";
 import UpdateTaskDialog from "./UpdateTaskDialog";
 import { UpdateTaskSchema } from "../taskSchema";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "../../../hooks/use-toast";
 
 export default function TaskTable() {
   const queryClient = useQueryClient();

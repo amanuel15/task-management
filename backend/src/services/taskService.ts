@@ -1,5 +1,5 @@
-import prisma from '@/models/prismaClient';
-import { taskSchemas } from '@/schemas';
+import prisma from '../models/prismaClient';
+import { taskSchemas } from '../schemas';
 
 export function findMyTasks(userId: string) {
   return prisma.task.findMany({
