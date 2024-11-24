@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { JWT_EXPIRES_IN, JWT_SECRET } from '@/constants';
+import { JWT_EXPIRES_IN, JWT_SECRET } from '../constants';
 import logger from './logger';
 
 export function generateToken(data: Record<string, unknown>) {

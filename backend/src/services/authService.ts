@@ -1,7 +1,7 @@
 import { hash, compare } from 'bcrypt';
 
-import prisma from '@/models/prismaClient';
-import { authSchemas } from '@/schemas';
+import prisma from '../models/prismaClient';
+import { authSchemas } from '../schemas';
 
 export async function createUser(user: authSchemas.RegisterSchema) {
   user.password = await hashPassword(user.password);

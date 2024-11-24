@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { User } from '@prisma/client';
-import { jwtUtils } from '@/utils';
+import { jwtUtils } from '../utils';
 
 export default function authMiddleware(
   req: Request,

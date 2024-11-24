@@ -11,12 +11,12 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+} from "../../../components/ui/card";
+import { Button } from "../../../components/ui/button";
 import { registerSchema, RegisterSchema } from "../authSchema";
-import FormField from "@/components/formField";
-import { register as registerUser } from "@/services/authService";
-import { useToast } from "@/hooks/use-toast";
+import FormField from "../../../components/formField";
+import { register as registerUser } from "../../../services/authService";
+import { useToast } from "../../../hooks/use-toast";
 import { AxiosError } from "axios";
 
 export default function RegisterForm() {

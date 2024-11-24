@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: database-config
+  name: backend-config
   namespace: task-management
 data:
   NODE_ENV: production
-  PORT: "3000"
+  PORT: "1378"
   DATABASE_URL: postgresql://postgres:hardpassword@database:5432/taskdb

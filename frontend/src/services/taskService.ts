@@ -1,9 +1,9 @@
 import {
   CreateTaskSchema,
   UpdateTaskSchema,
-} from "@/features/tasks/taskSchema";
+} from "../features/tasks/taskSchema";
 import apiClient from "./apiClient";
-import { Task } from "@/types/task";
+import { Task } from "../types/task";
 
 export async function createTask(task: CreateTaskSchema) {
   try {

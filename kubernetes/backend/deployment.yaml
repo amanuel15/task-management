@@ -16,11 +16,12 @@ spec:
       containers:
         - name: backend
           image: backend-image:latest # Replace with backend image
+          imagePullPolicy: IfNotPresent # Use the local image
           ports:
-            - containerPort: 3000
+            - containerPort: 1378
           envFrom:
             - configMapRef:
-                name: app-config
+                name: backend-config
           resources:
             requests:
               memory: 1Gi

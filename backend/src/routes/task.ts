@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { taskController } from '@/controllers';
-import { validateSchema } from '@/middlewares';
-import { taskSchemas, idSchema } from '@/schemas';
+import { taskController } from '../controllers';
+import { validateSchema } from '../middlewares';
+import { taskSchemas, idSchema } from '../schemas';
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import { authRoutes, taskRoutes } from '@/routes';
+import { authRoutes, taskRoutes } from './routes';
 import authMiddleware from './middlewares/authMiddleware';
 
 const app = express();

@@ -3,13 +3,13 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Navigate, Route, Routes } from "react-router";
 
 import "./App.css";
-import Login from "@/pages/Login";
-import Dashboard from "@/pages/Dashboard";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Register from "@/pages/Register";
-import AuthLayout from "@/features/auth/layouts/AuthLayout";
-import useAuthStore from "@/state/store";
-import { Toaster } from "@/components/ui/toaster";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Register from "./pages/Register";
+import AuthLayout from "./features/auth/layouts/AuthLayout";
+import useAuthStore from "./state/store";
+import { Toaster } from "./components/ui/toaster";
 
 const queryClient = new QueryClient();
 

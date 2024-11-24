@@ -25,10 +25,11 @@ WORKDIR /app
 # Copy only the necessary files from builder stage
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/src/models/prisma ./src/models/prisma
 COPY package.json .
 
 # Expose the application port
 EXPOSE 3000
 
 # Run the application
-CMD ["node", "dist/server.js"]
+CMD ["npm", "run", "start:prod"]
