@@ -3,6 +3,7 @@ import {
   UpdateTaskSchema,
 } from "@/features/tasks/taskSchema";
 import apiClient from "./apiClient";
+import { Task } from "@/types/task";
 
 export async function createTask(task: CreateTaskSchema) {
   try {
@@ -31,7 +32,7 @@ export async function updateTask(taskId: string, task: UpdateTaskSchema) {
     throw error;
   }
 }
-export async function getTasks() {
+export async function getTasks(): Promise<{ msg: string; data: Task[] }> {
   try {
     const response = await apiClient.get("/api/tasks");
 
@@ -42,7 +43,9 @@ export async function getTasks() {
   }
 }
 
-export async function getTask(taskId: string) {
+export async function getTask(
+  taskId: string
+): Promise<{ msg: string; data: Task }> {
   try {
     const response = await apiClient.get(`/api/tasks/${taskId}`);
 

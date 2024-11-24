@@ -1,8 +1,10 @@
-import { Button } from "@/components/ui/button";
 import useAuthStore from "@/state/store";
+import { Button } from "@/components/ui/button";
+import TaskTable from "@/features/tasks/components/TaskTable";
 
 export default function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
+
   return (
     <div>
       Dashboard
@@ -14,6 +16,7 @@ export default function Dashboard() {
       >
         Logout
       </Button>
+      <TaskTable />
     </div>
   );
 }
