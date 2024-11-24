@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NavLink } from "react-router";
+import { useMutation } from "react-query";
 
 import {
   Card,
@@ -15,10 +16,32 @@ import { Button } from "@/components/ui/button";
 import useAuthStore from "@/state/store";
 import { LoginSchema, loginSchema } from "../authSchema";
 import FormField from "@/components/formField";
+import { login as loginUser } from "@/services/authService";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 export default function LoginForm() {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const { isLoading, mutate } = useMutation(loginUser, {
+    onError: () => {
+      toast({
+        title: "Login Failed",
+        description: "Wrong email or password",
+      });
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Login Success",
+        description: "You have successfully logged in",
+      });
+      localStorage.setItem("authToken", data.token);
+      login();
+      navigate("/", { replace: true });
+    },
+  });
 
   const {
     register,
@@ -38,10 +61,8 @@ export default function LoginForm() {
       </CardHeader>
       <CardContent>
         <form
-          onSubmit={handleSubmit(() => {
-            localStorage.setItem("authToken", "test");
-            login();
-            navigate("/", { replace: true });
+          onSubmit={handleSubmit((data) => {
+            mutate({ email: data.email, password: data.password });
           })}
           className="space-y-4"
         >
@@ -65,6 +86,7 @@ export default function LoginForm() {
             />
             <Button type="submit" className="w-full">
               Login
+              {isLoading && <Loader2 className="animate-spin" />}
             </Button>
           </div>
         </form>

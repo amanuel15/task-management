@@ -8,7 +8,7 @@ export async function login({
   password: string;
 }) {
   try {
-    const response = await apiClient.post("/login", {
+    const response = await apiClient.post("/auth/login", {
       email,
       password,
     });
@@ -36,7 +36,7 @@ export async function register({
   password: string;
 }) {
   try {
-    const response = await apiClient.post("/register", {
+    const response = await apiClient.post("/auth/register", {
       email,
       name,
       password,

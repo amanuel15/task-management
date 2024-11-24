@@ -1,11 +1,19 @@
+import { Button } from "@/components/ui/button";
 import useAuthStore from "@/state/store";
 
 export default function Dashboard() {
-  const username = useAuthStore((state) => state.name);
+  const logout = useAuthStore((state) => state.logout);
   return (
     <div>
       Dashboard
-      <h1 className="text-3xl text-orange-400">Hello {`${username}`}</h1>
+      <Button
+        onClick={() => {
+          localStorage.removeItem("authToken");
+          logout();
+        }}
+      >
+        Logout
+      </Button>
     </div>
   );
 }

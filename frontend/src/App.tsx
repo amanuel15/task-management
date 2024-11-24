@@ -8,7 +8,8 @@ import Dashboard from "@/pages/Dashboard";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Register from "@/pages/Register";
 import AuthLayout from "@/features/auth/layouts/AuthLayout";
-import useAuthStore from "./state/store";
+import useAuthStore from "@/state/store";
+import { Toaster } from "@/components/ui/toaster";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ function App() {
           </Route>
         </Routes>
       </main>
+      <Toaster />
     </QueryClientProvider>
   );
 }

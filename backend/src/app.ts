@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 
 import { authRoutes, taskRoutes } from '@/routes';
 import authMiddleware from './middlewares/authMiddleware';
@@ -6,6 +7,7 @@ import authMiddleware from './middlewares/authMiddleware';
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use('/healthcheck', (_, res) => {
   res.status(200).json({ status: 'ok' });
 });
