@@ -20,8 +20,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: "http://localhost:2743"
     ports:
-      - "8080:80" # Maps port 8080 on the host to port 80 in the container
+      - "3000:3000" # Maps port 8080 on the host to port 80 in the container
     depends_on:
       - backend # Ensure the backend service is started first
     networks:
@@ -32,8 +34,9 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000" # Maps port 3000 on the host to port 3000 in the container
+      - "2743:2743"
     environment:
+      PORT: 2743
       DATABASE_URL: "postgresql://postgres:hardpassword@db:5432/mydatabase" # Example DB connection
     depends_on:
       - db # Ensure the database service is started first
