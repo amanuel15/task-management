@@ -38,10 +38,7 @@ export default function RegisterForm() {
       <CardContent>
         <form
           onSubmit={handleSubmit(() => {
-            login({
-              email: "m@example.com",
-              name: "joe",
-            });
+            login();
             navigate("/", { replace: true });
           })}
           className="space-y-4"

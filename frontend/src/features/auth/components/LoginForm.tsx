@@ -39,10 +39,8 @@ export default function LoginForm() {
       <CardContent>
         <form
           onSubmit={handleSubmit(() => {
-            login({
-              email: "m@example.com",
-              name: "joe",
-            });
+            localStorage.setItem("authToken", "test");
+            login();
             navigate("/", { replace: true });
           })}
           className="space-y-4"
