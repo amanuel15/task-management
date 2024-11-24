@@ -1,6 +1,8 @@
 import { NavLink, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "react-query";
+import { Loader2 } from "lucide-react";
 
 import {
   Card,
@@ -11,13 +13,33 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import useAuthStore from "@/state/store";
 import { registerSchema, RegisterSchema } from "../authSchema";
 import FormField from "@/components/formField";
+import { register as registerUser } from "@/services/authService";
+import { useToast } from "@/hooks/use-toast";
+import { AxiosError } from "axios";
 
 export default function RegisterForm() {
-  const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const { isLoading, mutate } = useMutation(registerUser, {
+    onError: (error) => {
+      toast({
+        title: "Registration Failed",
+        description:
+          ((error as AxiosError)?.response?.data as { msg: string })?.msg ??
+          "Wrong email or password",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Registration Success",
+        description: "Login to continue",
+      });
+      navigate("/login");
+    },
+  });
 
   const {
     register,
@@ -37,9 +59,8 @@ export default function RegisterForm() {
       </CardHeader>
       <CardContent>
         <form
-          onSubmit={handleSubmit(() => {
-            login();
-            navigate("/", { replace: true });
+          onSubmit={handleSubmit((data) => {
+            mutate(data);
           })}
           className="space-y-4"
         >
@@ -72,6 +93,7 @@ export default function RegisterForm() {
             />
             <Button type="submit" className="w-full">
               Register
+              {isLoading && <Loader2 className="animate-spin" />}
             </Button>
           </div>
         </form>

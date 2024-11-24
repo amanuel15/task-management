@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NavLink } from "react-router";
 import { useMutation } from "react-query";
+import { Loader2 } from "lucide-react";
 
 import {
   Card,
@@ -18,7 +19,6 @@ import { LoginSchema, loginSchema } from "../authSchema";
 import FormField from "@/components/formField";
 import { login as loginUser } from "@/services/authService";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 
 export default function LoginForm() {
   const login = useAuthStore((state) => state.login);
