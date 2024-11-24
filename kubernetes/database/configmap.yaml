@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: task-management
+data:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: hardpassword
+  POSTGRES_DB: postgres
