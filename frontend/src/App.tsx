@@ -1,15 +1,30 @@
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Route, Routes } from "react-router";
 
 import "./App.css";
-import { Button } from "@/components/ui/button";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <h1 className="text-3xl text-orange-400">Hello</h1>
-      <Button>Submit</Button>
+      <Routes>
+        <Route path="login" element={<Login />} />
+        <Route
+          index
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        >
+          {/* <Route path="tasks/:id" element={<Project />} /> */}
+        </Route>
+      </Routes>
     </QueryClientProvider>
   );
 }
