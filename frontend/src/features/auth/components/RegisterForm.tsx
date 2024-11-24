@@ -1,7 +1,6 @@
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { NavLink } from "react-router";
 
 import {
   Card,
@@ -13,10 +12,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useAuthStore from "@/state/store";
-import { LoginSchema, loginSchema } from "../authSchema";
+import { registerSchema, RegisterSchema } from "../authSchema";
 import FormField from "@/components/formField";
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
 
@@ -24,16 +23,16 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
   });
 
   return (
-    <Card className="mx-auto min-w-96 max-w-sm">
+    <Card className="mx-auto min-w-96 max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Login</CardTitle>
+        <CardTitle className="text-2xl font-bold">Register</CardTitle>
         <CardDescription>
-          Enter your email and password to login to your account
+          Enter your details to create an account
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -49,6 +48,15 @@ export default function LoginForm() {
         >
           <div className="space-y-4">
             <FormField
+              label="Username"
+              name="name"
+              type="text"
+              placeholder="Enter your name"
+              register={register}
+              errors={errors}
+            />
+
+            <FormField
               label="Email"
               name="email"
               type="email"
@@ -61,19 +69,19 @@ export default function LoginForm() {
               label="Password"
               name="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="Enter a password"
               register={register}
               errors={errors}
             />
             <Button type="submit" className="w-full">
-              Login
+              Register
             </Button>
           </div>
         </form>
       </CardContent>
       <CardFooter>
-        <NavLink className={"text-primary text-sm m-auto"} to="/register">
-          Create an account?
+        <NavLink className={"text-primary text-sm m-auto"} to="/login">
+          I have an account?
         </NavLink>
       </CardFooter>
     </Card>
