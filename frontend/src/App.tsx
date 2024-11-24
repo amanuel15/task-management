@@ -11,20 +11,22 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Routes>
-        <Route path="login" element={<Login />} />
-        <Route
-          index
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        >
-          {/* <Route path="tasks/:id" element={<Project />} /> */}
-        </Route>
-      </Routes>
+      <main className="container m-auto">
+        <Routes>
+          <Route path="login" element={<Login />} />
+          <Route
+            index
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
+            {/* <Route path="tasks/:id" element={<Project />} /> */}
+          </Route>
+        </Routes>
+      </main>
     </QueryClientProvider>
   );
 }
