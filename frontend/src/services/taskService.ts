@@ -9,12 +9,6 @@ export async function createTask(task: CreateTaskSchema) {
   try {
     const response = await apiClient.post("/api/tasks", task);
 
-    // Assume the API returns a token
-    const token = response.data.token;
-
-    // Store the token (in localStorage or cookies)
-    localStorage.setItem("authToken", token);
-
     return response.data; // return data to inform the component about the result
   } catch (error) {
     console.error("Create task error:", error);
@@ -22,7 +16,13 @@ export async function createTask(task: CreateTaskSchema) {
   }
 }
 
-export async function updateTask(taskId: string, task: UpdateTaskSchema) {
+export async function updateTask({
+  taskId,
+  task,
+}: {
+  taskId: string;
+  task: UpdateTaskSchema;
+}) {
   try {
     const response = await apiClient.patch(`/api/tasks/${taskId}`, task);
 

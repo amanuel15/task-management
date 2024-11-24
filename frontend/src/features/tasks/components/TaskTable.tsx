@@ -22,8 +22,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getTasks } from "@/services/taskService";
+import { useState } from "react";
+import CreateTaskDialog from "./CreateTaskDialog";
 
 export default function TaskTable() {
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const { data, isLoading, error } = useQuery({
     queryKey: ["tasks"],
     queryFn: getTasks,
@@ -46,7 +49,11 @@ export default function TaskTable() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Tasks</h1>
-        <Button onClick={() => {}}>
+        <Button
+          onClick={() => {
+            setOpenCreateDialog(true);
+          }}
+        >
           <Plus className="mr-2 h-4 w-4" /> Create New
         </Button>
       </div>
@@ -122,6 +129,7 @@ export default function TaskTable() {
           </TableRow>
         </TableFooter>
       </Table>
+      <CreateTaskDialog open={openCreateDialog} setOpen={setOpenCreateDialog} />
     </div>
   );
 }
