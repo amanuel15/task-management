@@ -8,7 +8,7 @@ export async function login({
   password: string;
 }) {
   try {
-    const response = await apiClient.post("/login", {
+    const response = await apiClient.post("/auth/login", {
       email,
       password,
     });
@@ -36,17 +36,11 @@ export async function register({
   password: string;
 }) {
   try {
-    const response = await apiClient.post("/register", {
+    const response = await apiClient.post("/auth/register", {
       email,
       name,
       password,
     });
-
-    // Assume the API returns a token
-    const token = response.data.token;
-
-    // Store the token (in localStorage or cookies)
-    localStorage.setItem("authToken", token);
 
     return response.data; // return data to inform the component about the result
   } catch (error) {
