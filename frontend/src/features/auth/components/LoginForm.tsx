@@ -32,12 +32,11 @@ export default function LoginForm() {
         description: "Wrong email or password",
       });
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast({
         title: "Login Success",
         description: "You have successfully logged in",
       });
-      localStorage.setItem("authToken", data.token);
       login();
       navigate("/", { replace: true });
     },

@@ -4,18 +4,18 @@ export const createTaskSchema = z
   .object({
     title: z.string(),
     description: z.string().optional(),
-    dueDate: z.string().datetime().optional(),
-    priority: z.enum(["HIGHT", "MEDIUM", "LOW"]).optional(),
+    dueDate: z.string().datetime(),
+    priority: z.enum(["HIGH", "MEDIUM", "LOW"]).optional(),
   })
   .strict();
 
 export const updateTaskSchema = z
   .object({
-    title: z.string().optional(),
+    title: z.string(),
     description: z.string().optional(),
-    dueDate: z.string().datetime().optional(),
-    priority: z.enum(["HIGH", "MEDIUM", "LOW"]).optional(),
-    status: z.enum(["PENDING", "IN_PROGRESS", "COMPLETED"]).optional(),
+    dueDate: z.string().datetime(),
+    priority: z.enum(["HIGH", "MEDIUM", "LOW"]),
+    status: z.enum(["PENDING", "IN_PROGRESS", "COMPLETED"]),
   })
   .strict();
 

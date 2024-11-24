@@ -3,16 +3,11 @@ import {
   UpdateTaskSchema,
 } from "@/features/tasks/taskSchema";
 import apiClient from "./apiClient";
+import { Task } from "@/types/task";
 
 export async function createTask(task: CreateTaskSchema) {
   try {
     const response = await apiClient.post("/api/tasks", task);
-
-    // Assume the API returns a token
-    const token = response.data.token;
-
-    // Store the token (in localStorage or cookies)
-    localStorage.setItem("authToken", token);
 
     return response.data; // return data to inform the component about the result
   } catch (error) {
@@ -21,9 +16,15 @@ export async function createTask(task: CreateTaskSchema) {
   }
 }
 
-export async function updateTask(taskId: string, task: UpdateTaskSchema) {
+export async function updateTask({
+  taskId,
+  task,
+}: {
+  taskId: string;
+  task: UpdateTaskSchema;
+}) {
   try {
-    const response = await apiClient.patch(`/api/tasks/${taskId}`, task);
+    const response = await apiClient.put(`/api/tasks/${taskId}`, task);
 
     return response.data; // return data to inform the component about the result
   } catch (error) {
@@ -31,7 +32,19 @@ export async function updateTask(taskId: string, task: UpdateTaskSchema) {
     throw error;
   }
 }
-export async function getTasks() {
+
+export async function deleteTask(taskId: string) {
+  try {
+    const response = await apiClient.delete(`/api/tasks/${taskId}`);
+
+    return response.data; // return data to inform the component about the result
+  } catch (error) {
+    console.error("Delete task error:", error);
+    throw error;
+  }
+}
+
+export async function getTasks(): Promise<{ msg: string; data: Task[] }> {
   try {
     const response = await apiClient.get("/api/tasks");
 
@@ -42,7 +55,9 @@ export async function getTasks() {
   }
 }
 
-export async function getTask(taskId: string) {
+export async function getTask(
+  taskId: string
+): Promise<{ msg: string; data: Task }> {
   try {
     const response = await apiClient.get(`/api/tasks/${taskId}`);
 
