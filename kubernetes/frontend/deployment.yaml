@@ -4,7 +4,7 @@ metadata:
   name: frontend
   namespace: task-management
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -16,8 +16,9 @@ spec:
       containers:
         - name: frontend
           image: frontend-image:latest # Replace with your frontend image
+          imagePullPolicy: IfNotPresent # Use the local image
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           resources:
             requests:
               memory: 500Mi

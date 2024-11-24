@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backend-config
+  name: database-config
   namespace: task-management
 data:
   POSTGRES_USER: postgres

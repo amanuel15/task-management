@@ -4,11 +4,10 @@ metadata:
   name: frontend
   namespace: task-management
 spec:
-  type: NodePort # Use NodePort for Minikube external access
+  type: LoadBalancer # Use NodePort for Minikube external access
   selector:
     app: frontend
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
-      nodePort: 30080 # Fixed NodePort for Minikube
+      port: 8080
+      targetPort: 3000
