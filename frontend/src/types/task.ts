@@ -9,3 +9,12 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
 }
+
+type OrderDirection = "asc" | "desc";
+export type OrderBy = {
+  dueDate?: OrderDirection;
+  priority?: OrderDirection;
+  status?: OrderDirection;
+};
+
+export type OrderKey = keyof OrderBy;
