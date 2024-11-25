@@ -12,6 +12,8 @@ export default function validate(
     if (val.success) {
       if (field === 'body') {
         req.body = val.data;
+      } else if (field === 'query') {
+        req.query = val.data;
       }
       next();
     } else {

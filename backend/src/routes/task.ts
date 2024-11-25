@@ -3,6 +3,7 @@ import express from 'express';
 import { taskController } from '../controllers';
 import { validateSchema } from '../middlewares';
 import { taskSchemas, idSchema } from '../schemas';
+import { queryTasksSchema } from '@/schemas/taskSchemas';
 
 const router = express.Router();
 
@@ -18,7 +19,11 @@ router.put(
   validateSchema(idSchema, 'params'),
   taskController.update
 );
-router.get('/', taskController.findAll);
+router.get(
+  '/',
+  validateSchema(queryTasksSchema, 'query'),
+  taskController.findAll
+);
 router.get('/:id', validateSchema(idSchema, 'params'), taskController.findOne);
 router.delete(
   '/:id',
