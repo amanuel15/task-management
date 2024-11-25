@@ -36,6 +36,7 @@ import { OrderBy, OrderKey, Task } from "../../../types/task";
 import UpdateTaskDialog from "./UpdateTaskDialog";
 import { UpdateTaskSchema } from "../taskSchema";
 import { useToast } from "../../../hooks/use-toast";
+import { FilterDropdown } from "./FilterDropdown";
 
 export default function TaskTable() {
   const queryClient = useQueryClient();
@@ -43,9 +44,16 @@ export default function TaskTable() {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openTask, setOpenTask] = useState<Task | null>(null);
   const [orderBy, setOrderBy] = useState<OrderBy>({});
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
   const { data, isLoading, error } = useQuery({
-    queryKey: ["tasks", orderBy],
-    queryFn: () => getTasks({ orderBy }),
+    queryKey: ["tasks", orderBy, selectedStatuses, selectedPriorities],
+    queryFn: () =>
+      getTasks({
+        orderBy,
+        status: selectedStatuses,
+        priority: selectedPriorities,
+      }),
   });
 
   const handleOrderClicked = (field: OrderKey) => {
@@ -77,8 +85,22 @@ export default function TaskTable() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Tasks</h1>
+      <h1 className="text-2xl font-bold">Tasks</h1>
+      <div className="flex justify-between items-center my-4">
+        <div className="flex flex-row gap-4">
+          <FilterDropdown
+            label="Status"
+            options={["PENDING", "IN_PROGRESS", "COMPLETED"]}
+            selected={selectedStatuses}
+            setSelected={setSelectedStatuses}
+          />
+          <FilterDropdown
+            label="Priority"
+            options={["HIGH", "MEDIUM", "LOW"]}
+            selected={selectedPriorities}
+            setSelected={setSelectedPriorities}
+          />
+        </div>
         <Button
           onClick={() => {
             setOpenCreateDialog(true);

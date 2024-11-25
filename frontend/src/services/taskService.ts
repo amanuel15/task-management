@@ -46,19 +46,25 @@ export async function deleteTask(taskId: string) {
 
 export async function getTasks({
   orderBy,
+  status,
+  priority,
 }: {
   orderBy?: OrderBy;
+  status?: string[];
+  priority?: string[];
 }): Promise<{ msg: string; data: Task[] }> {
-  const params: Record<string, string> = {};
-  if (orderBy) {
-    const keys = Object.keys(orderBy) as OrderKey[];
-    if (keys.length) {
-      params.orderBy = JSON.stringify(
-        keys.map((key) => ({ [key]: orderBy[key] }))
-      );
-    }
-  }
   try {
+    const params: Record<string, string> = {};
+    if (orderBy) {
+      const keys = Object.keys(orderBy) as OrderKey[];
+      if (keys.length) {
+        params.orderBy = JSON.stringify(
+          keys.map((key) => ({ [key]: orderBy[key] }))
+        );
+      }
+    }
+    if (status?.length) params.status = JSON.stringify(status);
+    if (priority?.length) params.priority = JSON.stringify(priority);
     const response = await apiClient.get("/api/tasks", {
       params,
     });
