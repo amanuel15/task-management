@@ -71,12 +71,12 @@ describe('Task Endpoints', () => {
       });
   });
 
-  it('PATCH /api/tasks/:taskId should update a task', (done) => {
+  it('PUT /api/tasks/:taskId should update a task', (done) => {
     const description = 'New updated description';
     request
-      .patch(`/api/tasks/${taskId}`)
+      .put(`/api/tasks/${taskId}`)
       .set('Authorization', `Bearer ${token}`)
-      .send({ description })
+      .send({ ...testTask, description, status: 'IN_PROGRESS' })
       .expect(200)
       .expect('Content-Type', /application\/json/) // make sure content type is json
       .expect(function (res) {

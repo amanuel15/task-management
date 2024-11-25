@@ -3,7 +3,7 @@ import {
   UpdateTaskSchema,
 } from "../features/tasks/taskSchema";
 import apiClient from "./apiClient";
-import { Task } from "../types/task";
+import { OrderBy, OrderKey, Task } from "../types/task";
 
 export async function createTask(task: CreateTaskSchema) {
   try {
@@ -44,9 +44,30 @@ export async function deleteTask(taskId: string) {
   }
 }
 
-export async function getTasks(): Promise<{ msg: string; data: Task[] }> {
+export async function getTasks({
+  orderBy,
+  status,
+  priority,
+}: {
+  orderBy?: OrderBy;
+  status?: string[];
+  priority?: string[];
+}): Promise<{ msg: string; data: Task[] }> {
   try {
-    const response = await apiClient.get("/api/tasks");
+    const params: Record<string, string> = {};
+    if (orderBy) {
+      const keys = Object.keys(orderBy) as OrderKey[];
+      if (keys.length) {
+        params.orderBy = JSON.stringify(
+          keys.map((key) => ({ [key]: orderBy[key] }))
+        );
+      }
+    }
+    if (status?.length) params.status = JSON.stringify(status);
+    if (priority?.length) params.priority = JSON.stringify(priority);
+    const response = await apiClient.get("/api/tasks", {
+      params,
+    });
 
     return response.data; // return data to inform the component about the result
   } catch (error) {
