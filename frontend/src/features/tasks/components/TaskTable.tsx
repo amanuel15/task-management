@@ -1,5 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Loader2, MoreHorizontal, Pencil, Plus, Trash } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+  Trash,
+} from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 import { Button } from "../../../components/ui/button";
@@ -24,20 +32,34 @@ import {
 import { deleteTask, getTasks } from "../../../services/taskService";
 import { useState } from "react";
 import CreateTaskDialog from "./CreateTaskDialog";
-import { Task } from "../../../types/task";
+import { OrderBy, OrderKey, Task } from "../../../types/task";
 import UpdateTaskDialog from "./UpdateTaskDialog";
 import { UpdateTaskSchema } from "../taskSchema";
 import { useToast } from "../../../hooks/use-toast";
+import { FilterDropdown } from "./FilterDropdown";
 
 export default function TaskTable() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openTask, setOpenTask] = useState<Task | null>(null);
+  const [orderBy, setOrderBy] = useState<OrderBy>({});
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
   const { data, isLoading, error } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: getTasks,
+    queryKey: ["tasks", orderBy, selectedStatuses, selectedPriorities],
+    queryFn: () =>
+      getTasks({
+        orderBy,
+        status: selectedStatuses,
+        priority: selectedPriorities,
+      }),
   });
+
+  const handleOrderClicked = (field: OrderKey) => {
+    const direction = orderBy[field] === "desc" ? "asc" : "desc";
+    setOrderBy({ ...orderBy, [field]: direction });
+  };
 
   const { isLoading: isDeleting, mutate } = useMutation(deleteTask, {
     onError: () => {
@@ -63,8 +85,22 @@ export default function TaskTable() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Tasks</h1>
+      <h1 className="text-2xl font-bold">Tasks</h1>
+      <div className="flex justify-between items-center my-4">
+        <div className="flex flex-row gap-4">
+          <FilterDropdown
+            label="Status"
+            options={["PENDING", "IN_PROGRESS", "COMPLETED"]}
+            selected={selectedStatuses}
+            setSelected={setSelectedStatuses}
+          />
+          <FilterDropdown
+            label="Priority"
+            options={["HIGH", "MEDIUM", "LOW"]}
+            selected={selectedPriorities}
+            setSelected={setSelectedPriorities}
+          />
+        </div>
         <Button
           onClick={() => {
             setOpenCreateDialog(true);
@@ -80,9 +116,54 @@ export default function TaskTable() {
           <TableRow>
             <TableHead>Title</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Priority</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Due Date</TableHead>
+            <TableHead>
+              <button
+                onClick={() => handleOrderClicked("priority")}
+                className="flex items-center"
+                aria-label={`Sort by priority ${
+                  orderBy.priority === "desc" ? "descending" : "ascending"
+                }`}
+              >
+                Priority
+                {orderBy.priority === "desc" ? (
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                ) : (
+                  <ChevronUp className="ml-2 h-4 w-4" />
+                )}
+              </button>
+            </TableHead>
+            <TableHead>
+              <button
+                onClick={() => handleOrderClicked("status")}
+                className="flex items-center"
+                aria-label={`Sort by status ${
+                  orderBy.status === "desc" ? "descending" : "ascending"
+                }`}
+              >
+                Status
+                {orderBy.status === "desc" ? (
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                ) : (
+                  <ChevronUp className="ml-2 h-4 w-4" />
+                )}
+              </button>
+            </TableHead>
+            <TableHead>
+              <button
+                onClick={() => handleOrderClicked("dueDate")}
+                className="flex items-center"
+                aria-label={`Sort by due date ${
+                  orderBy.dueDate === "desc" ? "descending" : "ascending"
+                }`}
+              >
+                Due Date
+                {orderBy.dueDate === "desc" ? (
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                ) : (
+                  <ChevronUp className="ml-2 h-4 w-4" />
+                )}
+              </button>
+            </TableHead>
             <TableHead className="w-[70px]"></TableHead>
           </TableRow>
         </TableHeader>

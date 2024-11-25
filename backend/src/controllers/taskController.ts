@@ -6,7 +6,7 @@ import { logger } from '../utils';
 
 export async function findAll(req: Request, res: Response) {
   try {
-    const tasks = await taskService.findMyTasks(req.user!.id);
+    const tasks = await taskService.findMyTasks(req.user!.id, req.query);
     res.status(200).json({ msg: 'Tasks found', data: tasks });
   } catch (error) {
     logger.error(error);

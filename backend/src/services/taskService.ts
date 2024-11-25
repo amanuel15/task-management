@@ -1,10 +1,28 @@
+import { Prisma } from '@prisma/client';
 import prisma from '../models/prismaClient';
 import { taskSchemas } from '../schemas';
 
-export function findMyTasks(userId: string) {
+export function findMyTasks(
+  userId: string,
+  query: taskSchemas.QueryTasksSchema
+) {
+  const where: Prisma.TaskWhereInput = { userId };
+  const orderBy: Prisma.TaskOrderByWithRelationInput[] = [];
+
+  if (query.status?.length) where.status = { in: query.status };
+  if (query.priority?.length) where.priority = { in: query.priority };
+
+  if (query.orderBy?.length) {
+    (['dueDate', 'priority', 'status'] as const).forEach((field) => {
+      const exists = query.orderBy!.find((item) => item[field]);
+      if (exists) orderBy.push({ [field]: exists[field] });
+      else orderBy.push({ [field]: 'asc' });
+    });
+  }
+
   return prisma.task.findMany({
-    where: { userId },
-    orderBy: [{ dueDate: 'asc' }, { priority: 'asc' }, { status: 'asc' }]
+    where,
+    orderBy
   });
 }
 
