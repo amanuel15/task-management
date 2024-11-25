@@ -88,3 +88,90 @@ This will stop the containers and remove them. The `docker-compose.yml` file ens
 - **Permissions Issues**: Ensure that you have appropriate permissions to access Docker and Docker Compose commands.
 
 If you encounter any issues, check the logs using `docker-compose logs` to help diagnose the problem.
+
+<br />
+<br />
+
+# Running Tests for the Backend
+
+This guide will help you run the backend tests using Jest. It requires Docker Compose to first start the database container and then run the tests for the backend.
+
+## Prerequisites
+
+Before running the tests, ensure you have the following installed:
+
+- [Docker](https://www.docker.com/get-started) (Docker Engine)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Node.js](https://nodejs.org/en/) (For running backend tests)
+
+You can check if Docker and Docker Compose are installed correctly by running the following commands:
+
+```bash
+docker --version
+```
+
+```bash
+docker-compose --version
+```
+
+## Running Tests
+
+### 1. Start the Database Container
+
+Before running the backend tests, you need to start the database container using Docker Compose. To do this, run the following command in the root project directory:
+
+```bash
+docker-compose up db -d
+```
+
+This command will:
+
+- Start only the `db` service (the database container) defined in the `docker-compose.yml` file.
+- Run the database container in detached mode (`-d`), meaning it will run in the background.
+
+Ensure that the database container is running properly before proceeding.
+
+### 2. Navigate to the Backend Directory
+
+Once the database is up, navigate to the `/backend` directory where the tests are located:
+
+```bash
+cd backend
+```
+
+### 3. Run the Jest Tests
+
+Now, you're ready to run the backend tests using Jest. Run the following command:
+
+```bash
+npm run test
+```
+
+This command will:
+
+- Run the Jest test suite for the backend.
+- Display the test results in the terminal.
+
+### 4. Verifying the Tests
+
+After running `npm run test`, you should see the results of your Jest tests in the terminal. It will display whether the tests have passed or failed, along with any relevant information for debugging.
+
+### 5. Stopping the Database Container
+
+Once the tests are complete, you can stop the database container by running:
+
+```bash
+docker-compose down
+```
+
+This will stop and remove the container that was used for testing.
+
+## Troubleshooting
+
+- **Database Connection Issues**: If the backend tests cannot connect to the database, ensure that the database container is running and the backend is correctly configured to connect to it (e.g., correct environment variables or configuration files).
+- **Permissions Issues**: Ensure that you have the necessary permissions to run Docker and Docker Compose commands.
+- **Jest Errors**: If the tests fail, check the error message for details. You can also try running the tests with additional logging or debugging flags to gather more information.
+
+### Kubernetes
+
+Read about how to deploy it on a local minikube cluster [here](./kubernetes/README.md)
